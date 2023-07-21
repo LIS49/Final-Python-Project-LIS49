@@ -1,0 +1,44 @@
+import time #module for time related operations
+import pygame.mixer #module for time playback
+
+def play_sound(sound_file):
+    pygame.mixer.init() # Initialize the Pygame mixer to handle sound
+    sound = pygame.mixer.Sound(sound_file) # Load the sound file using 'pygame.mixer.Sound'
+    sound.play() #play loaded sound
+    pygame.time.wait(int(sound.get_length() * 1000)) # sound will play at the timer
+
+def play_beep_sound():
+    play_sound("/Users/ralphbonnet/Desktop/Python/windsound.mp3")#path to the sound downloaded
+
+def play_alarm_sound():
+    play_sound("/Users/ralphbonnet/Desktop/Python/Alarm-clock-ring-sound.mp3")#path to the sound downloaded
+
+def countdown_timer():
+    try:
+        hours = int(input("Enter the hours: "))  # enter hours and convert to an integer
+        minutes = int(input("Enter the minutes: "))  # enter minutes and convert to integer
+        seconds = int(input("Enter the seconds: "))  # enter seconds and convert to integer
+        total_seconds = hours * 3600 + minutes * 60 + seconds  # Calculate total seconds from user input
+
+        while total_seconds > 0: #while loop when it becomes zero
+            hours, remainder = divmod(total_seconds, 3600)# divmod function is particularly useful when you need both the quotient and remainder in one operation.
+            minutes, seconds = divmod(remainder, 60)
+            print(f"Time Remaining: {hours:02d}:{minutes:02d}:{seconds:02d}", end='\r')
+            time.sleep(1)
+            total_seconds -= 1
+
+            if total_seconds == 0:
+                play_alarm_sound()
+            elif total_seconds % 60 == 0:
+                play_beep_sound()
+
+        print("\nTime's up!") # shows that times is up!
+    except ValueError:
+        print("Invalid input. Please enter valid time values.") #if the person put letter, comma, fractions or floats
+
+def main():
+    print("Your Countdown Timer!") #display asking when running the program
+    countdown_timer()
+
+if __name__ == "__main__":
+    main() #it is to execute the main function when running the script.
